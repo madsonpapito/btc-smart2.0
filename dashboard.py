@@ -366,3 +366,25 @@ with col_right:
             st.success("Test Message Sent!")
         else:
             st.error("Failed to send.")
+
+# --- DEBUG FOOTER ---
+with st.expander("🛠️ Debug Information (Cloud Diagnostics)"):
+    st.write("If you see $0.00 above, check these values:")
+    
+    # Check Env Var
+    env_wallet = os.getenv("WALLET_ADDRESS")
+    if env_wallet:
+        masked = env_wallet[:6] + "..." + env_wallet[-4:]
+        st.success(f"Locked Wallet: `{masked}`")
+    else:
+        st.error("❌ WALLET_ADDRESS not found in Environment/Secrets!")
+        
+    # Check Price API
+    st.write(f"**BTC Price Source**: ${price:,.2f}")
+    
+    # Check Raw Data
+    st.write("**Raw Portfolio Data**:")
+    st.json(portfolio_data)
+
+    st.write("**Env Check**:")
+    st.write(f"Secrets Loaded: {'Yes' if st.secrets else 'No (Using .env or None)'}")
