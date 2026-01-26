@@ -65,9 +65,11 @@ with st.spinner("Syncing Chain Data..."):
 wallet_btc = 0.0
 wallet_usdc = 0.0
 if portfolio_data:
-    wallet_btc = portfolio_data["wallet"].get("cbBTC", 0) + portfolio_data["wallet"].get("WBTC", 0)
-    # SUM Native USDC + Bridged USDbC
-    wallet_usdc = portfolio_data["wallet"].get("USDC", 0) + portfolio_data["wallet"].get("USDbC", 0)
+    # SUM Native + Aave Supplied BTC
+    wallet_btc = portfolio_data["wallet"].get("cbBTC", 0) + portfolio_data["wallet"].get("WBTC", 0) + portfolio_data["wallet"].get("acbBTC", 0)
+    
+    # SUM Native + Bridged + Aave Supplied USD
+    wallet_usdc = portfolio_data["wallet"].get("USDC", 0) + portfolio_data["wallet"].get("USDbC", 0) + portfolio_data["wallet"].get("aUSDC", 0)
 else:
     st.error("⚠️ Falha na Conexão RPC (Blockchain).")
     st.warning("""
