@@ -384,19 +384,4 @@ with col_right:
 
     
     # Check Env Var
-    env_wallet = os.getenv("WALLET_ADDRESS")
-    if env_wallet:
-        # Show exact representation to catch quotes/newlines/spaces (e.g. '0x...' vs "0x...")
-        st.success(f"Locked Wallet (repr): `{repr(env_wallet)}`")
-    else:
-        st.error("❌ WALLET_ADDRESS not found in Environment/Secrets!")
-        
-    # Check Price API
-    st.write(f"**BTC Price Source**: ${price:,.2f}")
-    
-    # Check Raw Data
-    st.write("**Raw Portfolio Data**:")
-    st.json(portfolio_data)
 
-    st.write("**Env Check**:")
-    st.write(f"Secrets Loaded: {'Yes' if st.secrets else 'No (Using .env or None)'}")
