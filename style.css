@@ -1,0 +1,62 @@
+/* Main Background */
+.stApp {
+    background: radial-gradient(circle at top left, #1b2030, #0e1117);
+}
+
+/* Metric Cards */
+div[data-testid="stMetric"] {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s;
+}
+
+div[data-testid="stMetric"]:hover {
+    transform: translateY(-2px);
+    border-color: #00E5FF;
+}
+
+/* Metric Label */
+div[data-testid="stMetricLabel"] {
+    color: #8899A6;
+    font-size: 0.9rem;
+}
+
+/* Metric Value */
+div[data-testid="stMetricValue"] {
+    color: #FAFAFA;
+    font-weight: 700;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #0d1117;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Buttons */
+div.stButton > button {
+    background: linear-gradient(45deg, #00C6FF, #0072FF);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+div.stButton > button:hover {
+    box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+    transform: scale(1.02);
+}
+
+/* Tables */
+div[data-testid="stTable"] {
+    background: transparent;
+}
+thead tr th {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #00E5FF !important;
+}

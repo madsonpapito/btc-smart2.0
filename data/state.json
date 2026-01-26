@@ -1,0 +1,29 @@
+{
+  "last_check_price": 0,
+  "last_rebalance_price": 0,
+  "target_allocation_btc": 0.65,
+  "range_top": 100000,
+  "range_bottom": 50000,
+  "deposits": [
+    {
+      "cycle": 1,
+      "type": "DEPOSIT",
+      "date": "2026-01-26",
+      "btc_amount": 0.0,
+      "usd_amount": 100.0,
+      "price": 87732,
+      "total_val": 100.0,
+      "profit": 0
+    },
+    {
+      "cycle": 2,
+      "type": "BUY",
+      "date": "2026-01-26",
+      "btc_amount": 0.0007425,
+      "usd_amount": 34.79,
+      "price": 87934,
+      "total_val": 100.07835698,
+      "profit": 0
+    }
+  ]
+}
