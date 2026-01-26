@@ -379,31 +379,7 @@ with col_right:
     elif not current_alert_msg:
         st.session_state["last_alert_msg"] = "" # Reset if balanced
 
-    # Manual Test Button
-    if st.button("🔔 Test Telegram Alert"):
-        if send_telegram_alert("🔔 Manual Test from Smart Portfolio Dashboard"):
-            st.success("Test Message Sent!")
-        else:
-            st.error("Failed to send.")
 
-# --- DEBUG FOOTER ---
-with st.expander("🛠️ Debug Information (Cloud Diagnostics)"):
-    st.write("If you see $0.00 above, check these values:")
-    
-    # Check Env Var
-    env_wallet = os.getenv("WALLET_ADDRESS")
-    if env_wallet:
-        # Show exact representation to catch quotes/newlines/spaces (e.g. '0x...' vs "0x...")
-        st.success(f"Locked Wallet (repr): `{repr(env_wallet)}`")
-    else:
-        st.error("❌ WALLET_ADDRESS not found in Environment/Secrets!")
-        
-    # Check Price API
-    st.write(f"**BTC Price Source**: ${price:,.2f}")
-    
-    # Check Raw Data
-    st.write("**Raw Portfolio Data**:")
-    st.json(portfolio_data)
 
-    st.write("**Env Check**:")
-    st.write(f"Secrets Loaded: {'Yes' if st.secrets else 'No (Using .env or None)'}")
+
+
