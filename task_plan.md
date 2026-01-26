@@ -22,8 +22,8 @@
 ## Phase 5: T - Trigger (Deployment & Automation)
 - [x] **Hold Comparison**: Added "Strategy (Smart)" vs "Strategy (HODL)" metrics.
 - [x] **Alerts**: Dashboard auto-checks and sends Telegram msg on significant actionable deviation.
-- [/] **Cloud Deploy**: Currently running Local (`streamlit run dashboard.py`).
+- [x] **Cloud Deploy**: Deployed to Streamlit Community Cloud. Fixed Price API (User-Agent/Fallbacks).
 
 ## Maintenance
 - **Manual Input**: User must log Deposits/Trades in Dashboard Action Manager.
-- **Auto-Sync**: Disabled (API Limits).
+- **Secrets**: Ensure `WALLET_ADDRESS` and `TELEGRAM_` keys are set in Streamlit Cloud Secrets.

@@ -67,6 +67,15 @@ wallet_usdc = 0.0
 if portfolio_data:
     wallet_btc = portfolio_data["wallet"].get("cbBTC", 0) + portfolio_data["wallet"].get("WBTC", 0)
     wallet_usdc = portfolio_data["wallet"].get("USDC", 0)
+else:
+    st.error("⚠️ Falha na Conexão RPC (Blockchain).")
+    st.warning("""
+    **Possíveis Causas:**
+    1. (Cloud) Você esqueceu de configurar os **Secrets**? (WALLET_ADDRESS).
+    2. (Cloud) O RPC Público da Base pode estar bloqueando o IP.
+    
+    *O painel está usando valores zerados/padrão.*
+    """)
 
 # Aave Data
 aave_collat = portfolio_data["aave"].get("total_collateral_usd", 0)
