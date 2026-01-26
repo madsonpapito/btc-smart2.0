@@ -43,7 +43,7 @@ load_css()
 # --- HEADER ---
 st.markdown("""
     <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;'>
-        <h1 style='margin: 0; color: #FAFAFA;'><span style='color: #00E5FF;'>⚡ B.L.A.S.T.</span> PRO</h1>
+        <h1 style='margin: 0; color: #FAFAFA;'><span style='color: #00E5FF;'>⚡ SMART</span> BTC PORTFOLIO</h1>
         <div style='text-align: right;'>
             <span style='color: #8899A6; font-size: 0.9rem;'>STATUS DA REDE</span><br>
             <span style='color: #00FFA3; font-weight: bold;'>● ONLINE (BASE)</span>
@@ -382,4 +382,21 @@ with col_right:
 
 
 
+    
+    # Check Env Var
+    env_wallet = os.getenv("WALLET_ADDRESS")
+    if env_wallet:
+        # Show exact representation to catch quotes/newlines/spaces (e.g. '0x...' vs "0x...")
+        st.success(f"Locked Wallet (repr): `{repr(env_wallet)}`")
+    else:
+        st.error("❌ WALLET_ADDRESS not found in Environment/Secrets!")
+        
+    # Check Price API
+    st.write(f"**BTC Price Source**: ${price:,.2f}")
+    
+    # Check Raw Data
+    st.write("**Raw Portfolio Data**:")
+    st.json(portfolio_data)
 
+    st.write("**Env Check**:")
+    st.write(f"Secrets Loaded: {'Yes' if st.secrets else 'No (Using .env or None)'}")
