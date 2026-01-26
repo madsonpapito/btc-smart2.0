@@ -94,7 +94,6 @@ with st.expander("🛠️ Debug Information (Cloud Diagnostics)"):
         
         # LINK TO BASESCAN
         st.markdown(f"🔎 [**Clique aqui para ver seus Fundos na Basescan**](https://basescan.org/address/{env_wallet})", unsafe_allow_html=True)
-    else:
 
 # Aave Data
 aave_collat = portfolio_data["aave"].get("total_collateral_usd", 0)
