@@ -63,7 +63,7 @@ RPC_LIST = [
 ]
 
 def fetch_portfolio():
-def fetch_portfolio():
+
     portfolio = None
     
     # Try each RPC until one works
