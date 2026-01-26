@@ -17,12 +17,17 @@
 ## Phase 4: S - Stylize (Refinement & UI)
 - [x] **Dashboard UI**: Dark Theme, Action Manager, Range Table (User Defined).
 - [x] **Smart Logic**: Implemented Price Ranges (109k-119k = 35% BTC, etc.).
-- [x] **Rec Box**: "COMPRA/VENDA" box with specific amounts.
+- [x] **Action Box**: "COMPRA/VENDA" box with specific amounts.
 
 ## Phase 5: T - Trigger (Deployment & Automation)
 - [x] **Hold Comparison**: Added "Strategy (Smart)" vs "Strategy (HODL)" metrics.
 - [x] **Alerts**: Dashboard auto-checks and sends Telegram msg on significant actionable deviation.
-- [x] **Cloud Deploy**: Deployed to Streamlit Community Cloud. Fixed Price API (User-Agent/Fallbacks).
+- [x] **Cloud Deploy**: Deployed to Streamlit Community Cloud. 
+- [x] **Fixes**: 
+    - [x] Price Feed (Multi-source Fallback)
+    - [x] RPC (Multi-RPC Fallback for Cloud IP Limits)
+    - [x] Aave Integration (Track aUSDC/acbBTC)
+    - [x] Production Cleanup (Removed Debug & Test Buttons)
 
 ## Maintenance
 - **Manual Input**: User must log Deposits/Trades in Dashboard Action Manager.
