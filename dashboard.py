@@ -98,8 +98,9 @@ with st.expander("🛠️ Debug Information (Cloud Diagnostics)"):
 # Aave Data
 aave_collat = portfolio_data["aave"].get("total_collateral_usd", 0)
 aave_debt = portfolio_data["aave"].get("total_debt_usd", 0)
-# Simply adds Aave net value to USDC liquid for total calc (Simplification)
-total_usdc_equiv = wallet_usdc + (aave_collat - aave_debt)
+
+# FIX: Do not add aave_collat again. wallet_usdc/btc already include aTokens.
+total_usdc_equiv = wallet_usdc 
 total_btc_val = wallet_btc * price
 total_portfolio_val = total_usdc_equiv + total_btc_val
 current_alloc_pct = (total_btc_val / total_portfolio_val * 100) if total_portfolio_val > 0 else 0
