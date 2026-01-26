@@ -66,7 +66,8 @@ wallet_btc = 0.0
 wallet_usdc = 0.0
 if portfolio_data:
     wallet_btc = portfolio_data["wallet"].get("cbBTC", 0) + portfolio_data["wallet"].get("WBTC", 0)
-    wallet_usdc = portfolio_data["wallet"].get("USDC", 0)
+    # SUM Native USDC + Bridged USDbC
+    wallet_usdc = portfolio_data["wallet"].get("USDC", 0) + portfolio_data["wallet"].get("USDbC", 0)
 else:
     st.error("⚠️ Falha na Conexão RPC (Blockchain).")
     st.warning("""
@@ -76,6 +77,22 @@ else:
     
     *O painel está usando valores zerados/padrão.*
     """)
+
+# ... (omitted lines) ...
+
+# --- DEBUG FOOTER ---
+with st.expander("🛠️ Debug Information (Cloud Diagnostics)"):
+    st.write("If you see $0.00 above, check these values:")
+    
+    # Check Env Var
+    env_wallet = os.getenv("WALLET_ADDRESS")
+    if env_wallet:
+        # Show exact representation to catch quotes/newlines/spaces (e.g. '0x...' vs "0x...")
+        st.success(f"Locked Wallet (repr): `{repr(env_wallet)}`")
+        
+        # LINK TO BASESCAN
+        st.markdown(f"🔎 [**Clique aqui para ver seus Fundos na Basescan**](https://basescan.org/address/{env_wallet})", unsafe_allow_html=True)
+    else:
 
 # Aave Data
 aave_collat = portfolio_data["aave"].get("total_collateral_usd", 0)
