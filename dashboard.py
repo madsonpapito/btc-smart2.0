@@ -374,8 +374,8 @@ with st.expander("🛠️ Debug Information (Cloud Diagnostics)"):
     # Check Env Var
     env_wallet = os.getenv("WALLET_ADDRESS")
     if env_wallet:
-        masked = env_wallet[:6] + "..." + env_wallet[-4:]
-        st.success(f"Locked Wallet: `{masked}`")
+        # Show exact representation to catch quotes/newlines/spaces (e.g. '0x...' vs "0x...")
+        st.success(f"Locked Wallet (repr): `{repr(env_wallet)}`")
     else:
         st.error("❌ WALLET_ADDRESS not found in Environment/Secrets!")
         

@@ -63,12 +63,12 @@ RPC_LIST = [
 ]
 
 def fetch_portfolio():
+def fetch_portfolio():
     portfolio = None
     
     # Try each RPC until one works
     for rpc_url in RPC_LIST:
         try:
-            # print(f"Connecting to {rpc_url}...")
             w3 = Web3(Web3.HTTPProvider(rpc_url, request_kwargs={'timeout': 5}))
             
             if not w3.is_connected():
@@ -77,10 +77,17 @@ def fetch_portfolio():
             address = Web3.to_checksum_address(WALLET_ADDRESS)
             
             # Temporary storage for this attempt
-            temp_portfolio = {"wallet": {}, "aave": {}}
+            temp_portfolio = {"wallet": {}, "aave": {}, "meta": {"rpc": rpc_url}}
             success_tokens = 0
             
-            # Fetch Wallet Balances
+            # 1. Fetch Native ETH (Gas) - Sanity Check
+            try:
+                native_wei = w3.eth.get_balance(address)
+                temp_portfolio["wallet"]["ETH_GAS"] = native_wei / 1e18
+            except:
+                temp_portfolio["wallet"]["ETH_GAS"] = -1
+
+            # 2. Fetch Token Balances
             for symbol, contract_address in TOKENS.items():
                 c_addr = Web3.to_checksum_address(contract_address)
                 contract = w3.eth.contract(address=c_addr, abi=ERC20_ABI)
@@ -98,7 +105,7 @@ def fetch_portfolio():
             if success_tokens == 0:
                 raise Exception("No tokens fetched")
 
-            # Fetch Aave (Optional - Don't fail entire call if Aave fails)
+            # 3. Fetch Aave
             try:
                 pool_contract = w3.eth.contract(address=AAVE_POOL_ADDRESS, abi=AAVE_POOL_ABI)
                 user_data = pool_contract.functions.getUserAccountData(address).call()
@@ -107,14 +114,14 @@ def fetch_portfolio():
                 hf = user_data[5] / 1e18
                 temp_portfolio["aave"]["health_factor"] = "Infinity" if hf > 1000000 else hf
             except:
-                pass # Aave failure is acceptable
+                pass 
 
-            # If we got here, we have valid data
+            # Success
             portfolio = temp_portfolio
-            break # Exit loop, we are good
+            break 
             
         except Exception as e:
-            print(f"RPC {rpc_url} failed: {e}")
+            # print(f"RPC {rpc_url} failed: {e}")
             continue
 
     return portfolio
