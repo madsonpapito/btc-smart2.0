@@ -54,55 +54,68 @@ ERC20_ABI = [
     }
 ]
 
+# RPC List for Redundancy (Cloud IPs often get blocked by the main one)
+RPC_LIST = [
+    "https://base.llamarpc.com",
+    "https://base-mainnet.public.blastapi.io", 
+    "https://mainnet.base.org",
+    "https://1rpc.io/base"
+]
+
 def fetch_portfolio():
-    w3 = Web3(Web3.HTTPProvider(BASE_RPC))
-    if not w3.is_connected():
-        print("Error: Could not connect to Base RPC")
-        return
-
-    try:
-        address = Web3.to_checksum_address(WALLET_ADDRESS)
-    except ValueError:
-        print(f"Invalid address format: {WALLET_ADDRESS}")
-        return
-
-    portfolio = {"wallet": {}, "aave": {}}
-
-    # print("Fetching Wallet Balances...")
-    for symbol, contract_address in TOKENS.items():
+    portfolio = None
+    
+    # Try each RPC until one works
+    for rpc_url in RPC_LIST:
         try:
-            c_addr = Web3.to_checksum_address(contract_address)
-            contract = w3.eth.contract(address=c_addr, abi=ERC20_ABI)
-            balance_raw = contract.functions.balanceOf(address).call()
-            # Try to get decimals, default to 18 if fail
-            try:
-                decimals = contract.functions.decimals().call()
-            except:
-                decimals = 18
+            # print(f"Connecting to {rpc_url}...")
+            w3 = Web3(Web3.HTTPProvider(rpc_url, request_kwargs={'timeout': 5}))
             
-            balance = balance_raw / (10 ** decimals)
-            portfolio["wallet"][symbol] = balance
-        except Exception as e:
-            print(f"Error fetching {symbol}: {e}")
+            if not w3.is_connected():
+                continue
+                
+            address = Web3.to_checksum_address(WALLET_ADDRESS)
+            
+            # Temporary storage for this attempt
+            temp_portfolio = {"wallet": {}, "aave": {}}
+            success_tokens = 0
+            
+            # Fetch Wallet Balances
+            for symbol, contract_address in TOKENS.items():
+                c_addr = Web3.to_checksum_address(contract_address)
+                contract = w3.eth.contract(address=c_addr, abi=ERC20_ABI)
+                balance_raw = contract.functions.balanceOf(address).call()
+                
+                # Decimals
+                try:
+                    decimals = contract.functions.decimals().call()
+                except:
+                    decimals = 18
+                
+                temp_portfolio["wallet"][symbol] = balance_raw / (10 ** decimals)
+                success_tokens += 1
+            
+            if success_tokens == 0:
+                raise Exception("No tokens fetched")
 
-    # print("Fetching Aave Data...")
-    try:
-        pool_contract = w3.eth.contract(address=AAVE_POOL_ADDRESS, abi=AAVE_POOL_ABI)
-        user_data = pool_contract.functions.getUserAccountData(address).call()
-        # Aave returns values in USD (8 decimals)
-        portfolio["aave"]["total_collateral_usd"] = user_data[0] / 1e8
-        portfolio["aave"]["total_debt_usd"] = user_data[1] / 1e8
-        # Health Factor is 18 decimals
-        hf = user_data[5] / 1e18
-        # If HF is max uint256, it's infinite (user has no debt)
-        if hf > 1000000:
-            portfolio["aave"]["health_factor"] = "Infinity"
-        else:
-            portfolio["aave"]["health_factor"] = hf
+            # Fetch Aave (Optional - Don't fail entire call if Aave fails)
+            try:
+                pool_contract = w3.eth.contract(address=AAVE_POOL_ADDRESS, abi=AAVE_POOL_ABI)
+                user_data = pool_contract.functions.getUserAccountData(address).call()
+                temp_portfolio["aave"]["total_collateral_usd"] = user_data[0] / 1e8
+                temp_portfolio["aave"]["total_debt_usd"] = user_data[1] / 1e8
+                hf = user_data[5] / 1e18
+                temp_portfolio["aave"]["health_factor"] = "Infinity" if hf > 1000000 else hf
+            except:
+                pass # Aave failure is acceptable
+
+            # If we got here, we have valid data
+            portfolio = temp_portfolio
+            break # Exit loop, we are good
             
-    except Exception as e:
-        print(f"Error fetching Aave data: {e}")
-        # traceback.print_exc()
+        except Exception as e:
+            print(f"RPC {rpc_url} failed: {e}")
+            continue
 
     return portfolio
 
