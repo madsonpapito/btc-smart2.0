@@ -9,20 +9,20 @@
       "cycle": 1,
       "type": "DEPOSIT",
       "date": "2026-01-26",
-      "btc_amount": 0.0,
-      "usd_amount": 100.0,
-      "price": 87732,
-      "total_val": 100.0,
+      "btc_amount": 0.0007425,
+      "usd_amount": 34.79,
+      "price": 87934,
+      "total_val": 100.08,
       "profit": 0
     },
     {
       "cycle": 2,
-      "type": "BUY",
-      "date": "2026-01-26",
-      "btc_amount": 0.0007425,
-      "usd_amount": 34.79,
-      "price": 87934,
-      "total_val": 100.07835698,
+      "type": "DEPOSIT",
+      "date": "2026-01-27",
+      "btc_amount": 0.002925,
+      "usd_amount": 140.0,
+      "price": 88640.45,
+      "total_val": 399.86,
       "profit": 0
     }
   ]
