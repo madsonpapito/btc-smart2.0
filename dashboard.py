@@ -348,13 +348,18 @@ with col_right:
     for tx in state["deposits"]:
         if tx["type"] == "DEPOSIT":
              p = tx["price"] if tx["price"] > 0 else price
-             amount = tx["usd_amount"]
-             btc_bought = amount / p
-             hold_btc_qty += btc_bought
-             total_invested_usd += amount
-             # Also add any direct BTC deposits if field exists (simple logic for now)
-             if tx.get("btc_amount", 0) > 0 and tx["usd_amount"] == 0:
-                 hold_btc_qty += tx["btc_amount"]
+             
+             # 1. Convert USD component to BTC (HODL assumption: buy immediately)
+             btc_from_usd = tx["usd_amount"] / p
+             
+             # 2. Add direct BTC component
+             btc_direct = tx.get("btc_amount", 0.0)
+             
+             # Accumulate
+             hold_btc_qty += (btc_from_usd + btc_direct)
+             
+             # Cost Basis (USD Value at time of deposit)
+             total_invested_usd += tx["usd_amount"] + (btc_direct * p)
     
     hold_value = hold_btc_qty * price
     smart_value = total_portfolio_val
