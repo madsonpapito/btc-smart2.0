@@ -327,6 +327,15 @@ with col_right:
         )
     else:
         st.info("No cycles recorded.")
+    
+    # Undo Button
+    if state["deposits"]:
+        if st.button("↩️ Desfazer Último Ciclo"):
+            removed = state["deposits"].pop()
+            save_state(state)
+            st.success(f"Ciclo {removed['cycle']} removido!")
+            time.sleep(1)
+            st.rerun()
         
     # Stats & Comparison
     st.markdown("### Performance Comparison")
