@@ -24,6 +24,16 @@
       "price": 88640.45,
       "total_val": 399.86,
       "profit": 0
+    },
+    {
+      "cycle": 3,
+      "type": "DEPOSIT",
+      "date": "2026-02-04",
+      "btc_amount": 0.0019632,
+      "usd_amount": 50.00,
+      "price": 76405.87,
+      "total_val": 200.00,
+      "profit": 0
     }
   ]
 }
