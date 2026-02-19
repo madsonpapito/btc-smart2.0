@@ -6,6 +6,16 @@
   "range_bottom": 50000,
   "deposits": [
     {
+      "cycle": 0,
+      "type": "DEPOSIT",
+      "date": "2026-01-27",
+      "btc_amount": 0.0172,
+      "usd_amount": 200.0,
+      "price": 88000,
+      "total_val": 1713.6,
+      "profit": 0
+    },
+    {
       "cycle": 1,
       "type": "DEPOSIT",
       "date": "2026-01-26",

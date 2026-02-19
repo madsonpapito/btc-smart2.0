@@ -9,7 +9,10 @@ A semi-automated dashboard for tracking and rebalancing a Bitcoin portfolio on t
 ## 2. Key Features
 
 ### 📊 Dashboard
-- **Real-Time Data**: Fetches `USDC` and `cbBTC` balances directly from Base Mainnet RPC.
+- **Real-Time Data**: Fetches balances directly from Base Mainnet RPC.
+- **Asset Support**: 
+  - **Wallet**: USDC, USDbC (Bridged), cbBTC.
+  - **Aave V3**: aUSDC (Supplied), acbBTC (Supplied).
 - **Smart Allocation Logic**:
   - defined prices ranges (e.g., ~$109k-%119k → 35% BTC).
   - **Dynamic "Action Box"**: Calculates exact buy/sell amounts to stay in target.
@@ -18,18 +21,20 @@ A semi-automated dashboard for tracking and rebalancing a Bitcoin portfolio on t
 
 ### 🤖 Automation
 - **Telegram Alerts**: Sends a message to your phone if the Portfolio deviates >$50 from target.
-- **Resilient Price Feed**: Uses Coinbase -> Binance -> CoinGecko fallback to ensure uptime.
+- **Resilient Connectivity**: 
+  - **Price**: Coinbase -> Binance -> CoinGecko fallback.
+  - **RPC**: LlamaNodes -> BlastAPI -> Base -> 1RPC fallback (Bypasses Cloud Blocks).
 
 ## 3. Architecture
 - **`dashboard.py`**: Main UI and Logic Kernel.
 - **`data/state.json`**: Persistence layer for "Cycles" (Trades).
 - **`tools/`**:
-  - `fetch_portfolio.py`: Reads Blockchain State.
+  - `fetch_portfolio.py`: Reads Blockchain State (Wallet + Aave).
   - `send_alert.py`: Handles Telegram notifications.
   - `get_btc_price.py`: Multi-source Price Oracle.
 
 ## 4. Usage Guide
-1.  **Deposits**: Send USDC/BTC to your Base Wallet.
+1.  **Deposits**: Send USDC/BTC to your Base Wallet or Supply to Aave.
 2.  **Check**: Open Dashboard. It auto-updates your "Current Allocation".
 3.  **Action**:
     - If "COMPRA" box appears: Swap USDC -> cbBTC on Uniswap/Aerodrome.
@@ -39,4 +44,4 @@ A semi-automated dashboard for tracking and rebalancing a Bitcoin portfolio on t
 ## 5. Deployment
 - **Host**: Streamlit Community Cloud.
 - **Repository**: `madsonpapito/btc-smart2.0`.
-- **Status**: ✅ Deployed & Secrets Configured.
+- **Status**: ✅ Deployed & Verified.
